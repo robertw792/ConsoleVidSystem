@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 
 namespace VidSystem
 {
@@ -34,15 +36,50 @@ namespace VidSystem
                 return videos;
         }
 
+        public List<Video> ReadAllVideos()
+        {
+            List<Video> videos = new List<Video>();
+
+            using (StreamReader sr = new StreamReader(_csvFilePath))
+            {
+                sr.ReadLine();
+     
+                string csvLine;
+
+                while((csvLine = sr.ReadLine()) != null)
+                {
+                    videos.Add(ReadVideoFromCsvLine(csvLine));
+
+                }
+
+            }
+
+            return videos;
+        }
+
         public Video ReadVideoFromCsvLine(string csvLine)
         {
 
             string[] parts = csvLine.Split(',');
 
-            string name = parts[0];
-            string type = parts[1];
-            string description = parts[2];
-            string filepath = parts[3];
+            string name;
+            string type;
+            string description;
+            string filepath;
+
+
+            switch(parts.Length)
+            {
+                case 4:
+                    name = parts[0];
+                    type = parts[1];
+                    description = parts[2];
+                    filepath = parts[3];
+                    break;
+
+                default:
+                    throw new Exception($"Cannot parse video from csvline: { csvLine }");                
+            }
 
             return new Video(name, type, description, filepath);
 

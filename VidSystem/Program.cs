@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace VidSystem
 {
@@ -7,17 +8,19 @@ namespace VidSystem
         static void Main(string[] args)
         {
 
-            string filePath = @"C:\Users\rob\Documents\Vidsystem.csv";
+            string filePath = @"N:\Repos\robertw792\ConsoleVidSystem\VidSystem\Vidsystem.csv";
 
             var reader = new CsvReader(filePath);
 
-            Video[] videos = reader.ReadAllVideos(2);
+            List<Video> videos = reader.ReadAllVideos();
 
             foreach(Video video in videos)
             {
-                Console.WriteLine($"{video.Name}: {video.Description}, {video.Type}, {video.FilePath}");
-                Console.ReadKey();
+                Console.WriteLine($"{video.Name}, {video.Description}, {video.Type}, {video.FilePath}");
             }
+
+            Console.WriteLine($" No of vids is : {videos.Count}");
+
 
         }
     }
